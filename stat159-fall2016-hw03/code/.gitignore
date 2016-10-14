@@ -1,0 +1,10 @@
+# Object file
+*.o
+
+# Ada Library Information
+*.ali
+
+
+# R stuff
+*.Rhistory
+.DS_Store
