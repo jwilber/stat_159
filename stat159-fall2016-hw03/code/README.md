@@ -1,7 +1,7 @@
-## stat159-fall2016-hw03
-### title: Multiple Linear Regression (ISLR Reimplementation) 
-### author: Jared Wilber
-### date completed: October 14, 2016
+# stat159-fall2016-hw03
+## Multiple Linear Regression (ISLR Reimplementation) 
+#### Jared Wilber
+#### October 14, 2016
 
 ##### Repository Description
 This is a public repository containing the necessary data and source code for my reproduction of the multiple regression section 3.2 of __Introduction to Statistical Learning__ by Hastie, Tibshirani, James, and Witten.
@@ -63,6 +63,6 @@ This repository is __open source__.
 
 This repository has the __MIT__ license for software. The raw details of the license are in the LICENSE file of this repository.
 
-I've also included a creative commons license for media.
+The creative commons license for media is as follows:
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 
