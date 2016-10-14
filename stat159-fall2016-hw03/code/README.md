@@ -3,10 +3,14 @@
 #### Jared Wilber
 #### October 14, 2016
 
+***
+
 ##### Repository Description
 This is a public repository containing the necessary data and source code for my reproduction of the multiple regression section 3.2 of __Introduction to Statistical Learning__ by Hastie, Tibshirani, James, and Witten.
 
 It is homework 3 of Stat 159 at UC Berkeley
+
+***
 
 #### File Structure
   
@@ -51,14 +55,20 @@ stat159-fall2016-hw03/
         + report.pdf  
 
 
+***
+
 #### Author Information
 My name is Jared Wilber. I am currently a senior in statistics at UC Berkeley interest in all things data science.
+
+***
 
 #### Reproducing This Repository
 To reproduce this repository, fork/download the contents of the repository and run the R scrips.
 Alternatively, clone the repo and run the Makefile in the associated directory.
 
-###Licenses
+***
+
+### Licenses
 This repository is __open source__.
 
 This repository has the __MIT__ license for software. The raw details of the license are in the LICENSE file of this repository.
