@@ -1,6 +1,8 @@
 # This folder contained the following folders and R Scripts:
 
-__test-that.R__
+
+
+test-that.R
 Author: Jared Wilber
 Description: Contains the same informatino as tests/test-regression.R
 
@@ -23,7 +25,7 @@ scripts/
 	Description:  Script that reads in the Advertising.csv data set and computes a "regression" object---via lm()---as 		well as the summary of such regression object---via summary(). These objects are saved in the file regression.RData. 		This script also produces the three diagnostics plots residual-plot.png, scale-location-plot.png, and normal-qq-		plot.png 
 
 	__session-info-script.R__
-	author: Nura Kawa
+	Author: Jared Wilber
 	Description: Contains the output from the sessionInfo() function run by the author.
 
 
