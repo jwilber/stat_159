@@ -1,0 +1,187 @@
+#new
+## Abstract
+
+
+
+The following paper reproduces a multiple linear regression model used in _An Introduction to Statistical Learning with Applications in R_ by Gareth James, Daniela Witten, Trevor Hastie, and Robert Tibshirani. This book is avaialbe [ENTER URL]/The regression model pertains to predicting __Sales__ (in the thousands) from the advertising budgets of three different predictors: __TV__, __Radio__, and __Newspaper__ . It is featured in chapter 3.2 of the book.
+
+## Introduction
+
+Given a data set containing information pertaining to both sales and advertising budget, how could one develop a marketing plan that would result in higher product sales?
+
+To achieve this goal, the following paper will display how improving sales via multiple linear regression can be implemented. We will attempt to model the sales of a particular product as a function of advertising budget for three types of media: TV, radio, and newspaper. Because we are modelling this relationship via linear regression, we are inherently assuming that a linear relationship exists between our dependent variables and independent variable. We will run a total of four regressions: one for each of the sale + predictor combinations, and one where we regress sales on all three predictors.
+
+
+## Data
+
+The data set utilized in this paper, __Advertising.csv__, contains 200 observations of 5 variables. Four of the variables are of general interest: __Sales__, __TV__, __Radio__, and __Newspaper__. The fifth variable, __X__, is an index.
+
+This dataset is free to access online at the following url [URL]. Alternatively, you can visit the author's GitHub repository [My Github Account](http://www.github.com/jwilber) to access it as well.
+
+For this paper, we will use the following variables: __Sales__, __Radio__, _Newspaper__, and __TV__. __Sales__ refers to the number (in thousands) of a particular product's sales in 200 different markets. The other three variables correspond to advertising budget for each medium (in the thousands of $)
+
+In our analysis, we will treat __Sales__ as the dependent variable and __TV__, __Radio__, and __Newspaper__ as the independent variables.
+
+
+# Methodology
+
+### Multiple Linear Regression
+
+As stated, our approach for determining the association between __Sales__ and the other three variables,__Radio__, __Newspaper__, and  __TV__, will be linear regression. In particular, we will use simple linear regression: predicting __Y__ (a continuous, quantitative response) on the basis of single predictor variables, __X__ (where __X__ is a set of three variables). We'll assume the following linear relationship, regressing Y onto X:
+$$ Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \beta_3X_3 $$
+
+In our case, the model appears as follows:
+$$ sales = \beta_0 + \beta_1 * TV + \beta_2 * Radio + \beta_3 * Newspaper + error$$
+                
+Our β parameters are unkown constants that represent the how the dependent variable changes given a one-unit chane in the corresponding variable.  These parameters are known as the model _coefficients_. By fitting a linear model onto our training data, we obtain coefficient estimates that we use in the aforementioned linear model. In order to get our line, we must estimate the regression coefficients.
+
+### Estimating the Regression Coefficients
+
+The parameters are estimated using the same least squares approach that
+we used for simple linear regression; i.e. choose β0, β1,...,βp to minimize the sum of squared residuals (RSS):
+
+$$ RSS = \sum_{i=1}^n (y_i - \beta_0 - \beta_1x_i)^2 $$ 
+
+The values βˆ0, βˆ1,..., βˆp that minimize the above RSS equation are the multiple least squares regression coefficient estimates. These are obtained via linear algebra operations.
+
+Unlike the simple linear regression
+estimates given in (3.4), the multiple regression coefficient estimates have
+somewhat complicated forms that are most easily represented using matrix
+algebra. For this reason, we do not provide them here. Any statistical
+software package can be used to compute these coefficient estimates, and
+later in this chapter we
+
+# Important Questions in Multiple Regression
+
+When we perform multiple linear regression, we usually are interested in
+answering the following questions: 
+
+1. Is at least one of the predictors X1, X2,...,Xp useful in predicting
+the response?
+2. Do all the predictors help to explain Y , or is only a subset of the
+predictors useful?
+3. How well does the model fit the data?
+4. Given a set of predictor values, what response value should we predict,
+and how accurate is our prediction?
+
+Below we'll discuss them piecewise.
+
+### 1. Is at least one of the predictors X1, X2,...,Xp useful in predicting
+the response?
+
+Recall, for the simple regression case, we could test whether X1 was associated with Y via a simple t-test with the null hypothesis dictating that β1 = 0. This won't work for multiple regression, because we're dealing with multiple predictors.
+
+In the multiple regression case, say with p predictors, we need to test whether all of the regression coefficients are zero, (i.e. whether β1 = β2 = ··· = βp = 0).
+
+We'll use a hpyothesis test to achieve this.
+
+$$ H_0: \beta_1 = \beta_2 = ... \beta_p = 0 $$
+$$ H_1: \exists  \beta_j \neq 0 $$
+
+H0 : β1 = β2 = ··· = βp = 0
+versus the alternative
+Ha : at least one βj is non-zero.
+This hypothesis test is performed by computing the F-statistic:
+
+
+$$ F = \frac{(TSS - RSS)/p}{RSS/(n-p-1)} $$
+
+where
+
+$$ RSS = \sum_{i=1}^n (y_i - \beta_0 - \beta_1x_i)^2 $$ 
+$$ TSS = \sum_{i=1}^n (y_i - \beta_0 - \beta_1x_i)^2 $$ 
+$$\sum_{i=1}^n (y_i - \beta_0 - \beta_1x_i)^2 $$ 
+
+
+
+### 2. Deciding on Important Variables
+
+If our F-test reveals that at least one of the predictors is related to the response, we can investigate which variables are related.
+
+There are numerous methods to achieve this. If we have a small number of features, we can investigate the p-values one-by-one. However, this is not feasible for large datasets with high-dimensionality. 
+The task of determining which predictors are associated with the response is referred to as variable selection, and our discussion will be limited to only a few classical approaches to vairable selection.
+
+One method of variable selection is to try each model corresponding to all the combination of coefficients that we have. When selecting a model this way, multiple assessment criteria exist, such as _Mallow’s Cp, Akaike information criterion (AIC), Bayesian informationcriterion (BIC)_, and _adjusted R-squared_.
+
+Determining all possible model forms is not trivial. There are a total of $2^p$ models that contain subsets of p variables; this grows exponentially and quickly makes the task of trying out every possible subset of the predictors infeasible. Therefore, unless p is very
+small, we cannot consider all $2^p$ models, and instead we'll utilize three automated approaches to choose a smaller set of models. 
+
+#####Forward selection.
+
+In forward selection, we begin with a model that only has the intercept terms. From this, we fit all p possible simple linear regression models and add the variable that results in the lowest $RSS$ score. Then, with that model, we consider all other $p-1$ variables and add the one that results lowest $RSS$ for the two variable model. We repeat this until some stopping criteria is met.
+
+##### Backward selection
+
+Backward selection is similar to forward selection, except that instead of starting with the null model, we start with all variables. From there, we iteratively remove the variable with the largest p-value (as that variable is the least statistically significant). We then fit the new model and repeat until some stopping criteria is met (e.g. all p-values below some threshold).
+
+#### Mixed selection
+
+This is a combination of forward and backward se- mixed
+lection. We start with no variables in the model, and as with forward selection
+selection, we add the variable that provides the best fit. As we add variables one-by-one, the p-values may become larger. Thus, if any p-value rises above a certain threshold during the variable addition, we remove that variable from the model. We continue to perform these forward and backward steps in this manner until all variables in the model have a sufficiently low p-value, and all variables outside
+the model have large p-values (when added to the model).
+
+All of these methods have best-case uses, but it should be noted that backward selection cannot be used if $p > n$ , while forward selection can
+always be used. Also forward selection is a greedy approach.
+
+
+### 3. Model Fit
+
+Two common numerical measures of model fit we will discuss are the $RSE$ and
+$R^2$, the fraction of variance explained. 
+
+###### R-squared
+
+$R2$ is the square of the correlation of the response and the variable. In multiple linear regression, this equals $Cor(Y, Yˆ )^2$, the square of the correlation between the response and the fitted linear model. A notable property of the fitted linear model is
+that it maximizes this correlation among all possible linear models.
+
+A $R^2$ close to 1 indicates a good fit, while a value near 0 indicates a poor fit (though it's problem dependent). 
+
+One caveat regarding $R^2$ is that it will always increase when more variables are added to the model, even if those variables are only weakly associated with the response. This occurs because adding another variable to
+the least squares equations must allow us to fit the training data (though
+not necessarily the testing data) more accurately. Thus, the $R^2$,
+which is also computed on the training data, must increase, thereby overfitting the training set.
+
+##### RSE
+RSE is the residual standard error. It is an estimate of the standard deviation of the error in our model. Intuitively, it is the average amount that our response will deviate from the true regression line, defined as follows:
+
+$$ \sqrt{ 1/ (n-2) * \sum_{i=1}^n (y_i - \hat{y_i})^2} $$
+
+We consider this a measure of the _lack of fit_ of our model and want it as small as possible.
+
+
+Finally, a simple method to assess model fit is to plot the data.
+
+# 4. Predictions
+
+Once we have fit the multiple regression model, applying it for prediction is farily starightforward. That said, we must be cautious of three things when making preditions with our model:
+
+1
+1. The coefficient estimates (our $\hat(\beta)$ terms are estimate for the _true_ $\beta$ values. As such, our least squares plan is an approximation to the true population regression plane.  We can compute a confidence interval in order
+to determine how close $Y$ will be to $f(X)$.
+
+2. There is an additional source of potentially reducible error: model bias.
+Even if our approximate model were correct, this discrepancy will always exist. Regularization parameters exist to help take care of this.
+
+3. There is also random error in the model (aka irreducible error). We can assess the discrepancy betwween our predicted response and the true response using prediction intervals. Note that prediction intervals are always wider than confidence intervals because the incorporate the the estimation error _and_ the uncertainty of our irreducible error.
+
+
+We use a confidence interval to quantify the uncertainty surrounding confidence
+the average sales over a large number of cities. For example, given that interval
+$100,000 is spent on TV advertising and $20,000 is spent on radio advertising
+in each city, the 95 % confidence interval is [10,985, 11,528]. We interpret
+this to mean that 95 % of intervals of this form will contain the true value of
+f(X).8 On the other hand, a prediction interval can be used to quantify the prediction
+uncertainty surrounding sales for a particular city. Given that $100,000 is interval
+spent on TV advertising and $20,000 is spent on radio advertising in that city
+the 95 % prediction interval is [7,930, 14,580]. We interpret this to mean
+that 95 % of intervals of this form will contain the true value of Y for this
+city. Note that both intervals are centered at 11,256, but that the prediction
+interval is substantially wider than the confidence interval, reflecting the
+increased uncertainty about sales for a given city in comparison to the
+average sales over many locations.
+
+# Results
+
+This section will apply all we learned in the above methodology section to our the _Advertising_ data set.
+
