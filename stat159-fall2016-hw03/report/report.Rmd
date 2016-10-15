@@ -171,3 +171,12 @@ Even if our approximate model were correct, this discrepancy will always exist. 
 
 This section will apply all we learned in the above methodology section to our the _Advertising_ data set.
 
+To begin, let's view some of our data. We'll begin by viewing a scatterplot for each variable.
+
+```{r}
+ adv <- read.csv("data/Advertising.csv")
+source("code/scripts/regression-script.R")
+pairs(adv)
+```
+
+
