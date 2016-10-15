@@ -9,13 +9,12 @@ lm.fit <- lm(Sales ~ TV + Radio + Newspaper, data=adv)
 lmsum <- summary(lm.fit)
 
 
-#========================================================================================================
 # Title: test-regression.R
-# Author: Nura Kawa
+# Author: Jared Wilber
 #
 # Description: tests the functions of functions/regression-functions.R
 #
-#========================================================================================================
+
 
 library(testthat)
 
@@ -27,7 +26,7 @@ load("./data/regression.RData")
 
 
 
-#--------------------------------------------------------------------------------------------------------
+
 # RSS
 context("Test RSS")
 test_that("RSS is accurate ",{
@@ -37,7 +36,7 @@ test_that("RSS is accurate ",{
 })  
 
 
-#--------------------------------------------------------------------------------------------------------  
+
 # TSS  
 context("Test total_sum_squares")
 test_that("total_sum_squares works ",{
@@ -48,7 +47,7 @@ test_that("total_sum_squares works ",{
 })
 
 
-#--------------------------------------------------------------------------------------------------------  
+
 # RSE  
 context("Test RSE")
 test_that("RSE works ",{
@@ -58,7 +57,7 @@ test_that("RSE works ",{
 })
 
 
-#--------------------------------------------------------------------------------------------------------
+
 #R^2
 context("Test R-Squared")
 test_that("R-Squared works" , {
@@ -67,8 +66,8 @@ test_that("R-Squared works" , {
 })
 
 
-#--------------------------------------------------------------------------------------------------------
-# F-Stat
+
+# f-Statistic
 context("Test F-statistic")
 test_that("F-statistic works", {
   
@@ -76,4 +75,3 @@ test_that("F-statistic works", {
   
   
 })
-#---------------

@@ -11,7 +11,7 @@ data:
 eda: data
 	Rscript -e 'source("code/scripts/eda-script.R")'
 
-regression:
+regression: data
 	Rscript -e 'source("code/scripts/regression-script.R")'
 
 session:
@@ -20,7 +20,7 @@ session:
 
 # test regression function
 tests: 
-	Rscript -e 'source("test-that.R")'
+	Rscript -e 'source("code/test-that.R")'
 
 
 # make report
