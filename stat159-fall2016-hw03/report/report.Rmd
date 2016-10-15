@@ -1,3 +1,6 @@
+---
+output: pdf_document
+---
 #new
 ## Abstract
 
@@ -30,8 +33,6 @@ In our analysis, we will treat __Sales__ as the dependent variable and __TV__, _
 As stated, our approach for determining the association between __Sales__ and the other three variables,__Radio__, __Newspaper__, and  __TV__, will be linear regression. In particular, we will use simple linear regression: predicting __Y__ (a continuous, quantitative response) on the basis of single predictor variables, __X__ (where __X__ is a set of three variables). We'll assume the following linear relationship, regressing Y onto X:
 $$ Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \beta_3X_3 $$
 
-In our case, the model appears as follows:
-$$ sales = \beta_0 + \beta_1 * TV + \beta_2 * Radio + \beta_3 * Newspaper + error$$
                 
 Our β parameters are unkown constants that represent the how the dependent variable changes given a one-unit chane in the corresponding variable.  These parameters are known as the model _coefficients_. By fitting a linear model onto our training data, we obtain coefficient estimates that we use in the aforementioned linear model. In order to get our line, we must estimate the regression coefficients.
 
@@ -85,13 +86,6 @@ This hypothesis test is performed by computing the F-statistic:
 
 
 $$ F = \frac{(TSS - RSS)/p}{RSS/(n-p-1)} $$
-
-where
-
-$$ RSS = \sum_{i=1}^n (y_i - \beta_0 - \beta_1x_i)^2 $$ 
-$$ TSS = \sum_{i=1}^n (y_i - \beta_0 - \beta_1x_i)^2 $$ 
-$$\sum_{i=1}^n (y_i - \beta_0 - \beta_1x_i)^2 $$ 
-
 
 
 ### 2. Deciding on Important Variables
@@ -174,9 +168,158 @@ This section will apply all we learned in the above methodology section to our t
 To begin, let's view some of our data. We'll begin by viewing a scatterplot for each variable.
 
 ```{r}
- adv <- read.csv("data/Advertising.csv")
-source("code/scripts/regression-script.R")
+adv <- read.csv("./data/Advertising.csv")
+#source("code/scripts/regression-script.R")
+library(xtable)
+lm.fit <- lm(Sales ~ TV + Radio + Newspaper, data=adv)
+lmsum <- summary(lm.fit)
 pairs(adv)
 ```
 
+Our regression problem assumes the following form:
 
+In our case, the model appears as follows:
+$$ sales = \beta_0 + \beta_1 * TV + \beta_2 * Radio + \beta_3 * Newspaper + error$$
+
+How correlated are our features?
+
+```{r}
+library(xtable)
+cor_table <- xtable(cor(adv))
+print(cor_table, type="latex")
+```
+
+What happens if we fit individual regression models (one for each independent variable)?
+
+```{r message=F, warning=F, echo=F}
+tv_reg_table <- xtable(lm(Sales~TV, data = adv),
+                              caption = "Sales on TV")
+print(tv_reg_table, type="latex")
+
+
+cat("\n\n")
+newspaper_reg_table <- xtable(lm(Sales~Newspaper, data = adv),
+                              caption = "Sales on Newspaper")
+print(newspaper_reg_table, type="latex")
+
+cat("\n\n")
+
+radio_reg_table <- xtable(lm(Sales~Radio, data = adv),
+                          caption = "Sales on Radio")
+print(radio_reg_table, type="latex")
+
+```
+
+Unfortunately, using multiple linear models makes it difficult to estimate response values. Such a method also leaves room for surrogating and neglects confounding factors, such as influence from other variables.
+
+For this reason, we will use a multiple linear regression model:
+
+```{r , message=F, warning=F, echo=F}
+multiple_reg_table <- xtable(lm(Sales ~., data = adv),
+                          caption = "Multiple Linear Regression for Advertising data set")
+print(multiple_reg_table, type="latex")
+```
+
+Thus we can see the true effect for each variable; namely that TV and Radio are significant predictors but Newspaper is not. Thus, we should probably decrease our budget in newspaper ads and move it into TV and Radio.
+
+Now that we've created our model, how does it fit (or fail to fit) our data? To assess the performance of our multiple linear regression model, we'll employ the methods we discussed previously.
+
+
+```{r, echo=F}
+#library(xtable)
+lm.fit <- lm(Sales ~ TV + Radio + Newspaper, data=adv)
+lmsum <- summary(lm.fit)
+
+
+# lm() and summary() objects
+reg <- lm(Sales~., data = advertising)
+regsum <- summary(reg)
+
+
+#--------------------------------
+# RSS
+
+residual_sum_squares <- function(x) {
+  # input: lm() object
+  # output: Residual Sum of Squares Value
+  
+  sum( '^'(x$model[,1] - x$fitted.values, 2) )
+  
+}
+
+#residual_sum_squares(lm.fit)
+
+
+
+total_sum_squares <- function(x) {
+  # input: lm object
+  # output: Total Sum of Squares Value
+  
+  sum( '^'(x$model[,1] - mean(x$model[,1]), 2) )
+}
+
+#total_sum_squares(lm.fit)
+
+
+
+rse <- function(x) {
+  # input: lm() object
+  # output: RSE
+  n   <- length(x$residuals)
+  RSS <- residual_sum_squares(x)
+  sqrt( (1 / (n - 2)) * RSS)
+}
+
+#rse(lm.fit)
+
+
+# R^2
+
+r_squared <- function(x) {
+  # input: lm() object 
+  # output: R^2 value
+  TSS <- total_sum_squares(x)
+  RSS <- residual_sum_squares(x)
+  1 - (RSS/ TSS)
+}
+
+#r_squared(lm.fit)
+
+
+# F-stat
+
+f_statistic <- function(x) {
+  # input: lm() object 
+  # output: F-statistic
+  p     <- ncol(x$model) - 1
+  n     <- nrow(x$model)
+  RSS   <- residual_sum_squares(x)
+  TSS   <- total_sum_squares(x)
+  num   <- (TSS - RSS)/p
+  denom <- RSS / (n - p - 1)
+  num / denom
+}
+
+#f_statistic(lm.fit)
+
+```
+
+
+```{r message=F, warning=F, echo=F}
+table_funcs <- data.frame("Quantity" = c("Residual Standard Error",
+                          "R-Squared",
+                          "F-Statistic"),
+           "Value" = c(rse(lm.fit),
+                       r_squared(lm.fit),
+                       f_statistic(lm.fit)))
+
+table_funcs <- xtable(table_funcs, caption = "Multiple Linear Regression Coefficients")
+print(table_funcs, type = "latex", include.rownames = FALSE, include.colnames = TRUE)
+```
+
+Thus, our value for R-squared (.9) suggests that our model fit the data pretty well. Furthermore, our huge value for our F-statistic (570.27) reveals that this model is useful because a relationship definitely exists between our dependent and independent variables.
+Finally, our Residual Standard Error value (1.68) is not too large.
+
+# Conclusion
+
+In conclusion, multiple linear regression is a great choice of model when you have multiple predictors, a continuous response type, and assume a linear relationship between the response and predictors. In order to assess the performance of such a model, you can employ numerous techniques. We used r-squared, residual standard error, and the f-statistic. Our results for the advertising data set yielded that there is a significant relationship between Sales and two of our predictors: TV and Radio. Newspaper was insignificant.
