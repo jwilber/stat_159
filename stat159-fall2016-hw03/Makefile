@@ -24,7 +24,7 @@ tests:
 
 
 report: 
-	pandoc report/report.Rmd  --latex-engine=xelatex -o doc.pdf
+	pandoc -s report/report.Rmd -o report/report.html
 
 
 	
