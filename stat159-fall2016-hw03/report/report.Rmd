@@ -166,20 +166,6 @@ Even if our approximate model were correct, this discrepancy will always exist. 
 3. There is also random error in the model (aka irreducible error). We can assess the discrepancy betwween our predicted response and the true response using prediction intervals. Note that prediction intervals are always wider than confidence intervals because the incorporate the the estimation error _and_ the uncertainty of our irreducible error.
 
 
-We use a confidence interval to quantify the uncertainty surrounding confidence
-the average sales over a large number of cities. For example, given that interval
-$100,000 is spent on TV advertising and $20,000 is spent on radio advertising
-in each city, the 95 % confidence interval is [10,985, 11,528]. We interpret
-this to mean that 95 % of intervals of this form will contain the true value of
-f(X).8 On the other hand, a prediction interval can be used to quantify the prediction
-uncertainty surrounding sales for a particular city. Given that $100,000 is interval
-spent on TV advertising and $20,000 is spent on radio advertising in that city
-the 95 % prediction interval is [7,930, 14,580]. We interpret this to mean
-that 95 % of intervals of this form will contain the true value of Y for this
-city. Note that both intervals are centered at 11,256, but that the prediction
-interval is substantially wider than the confidence interval, reflecting the
-increased uncertainty about sales for a given city in comparison to the
-average sales over many locations.
 
 # Results
 
