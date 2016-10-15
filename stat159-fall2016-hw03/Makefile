@@ -23,7 +23,9 @@ tests:
 	Rscript -e 'source("code/test-that.R")'
 
 
-# make report
+report: 
+	pandoc report/report.Rmd  --latex-engine=xelatex -o doc.pdf
+
 
 	
 # Clean output file

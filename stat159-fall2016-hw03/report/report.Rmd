@@ -1,7 +1,7 @@
 ---
 output: pdf_document
 ---
-#new
+
 ## Abstract
 
 
@@ -34,16 +34,16 @@ As stated, our approach for determining the association between __Sales__ and th
 $$ Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \beta_3X_3 $$
 
                 
-Our β parameters are unkown constants that represent the how the dependent variable changes given a one-unit chane in the corresponding variable.  These parameters are known as the model _coefficients_. By fitting a linear model onto our training data, we obtain coefficient estimates that we use in the aforementioned linear model. In order to get our line, we must estimate the regression coefficients.
+Our B parameters are unkown constants that represent the how the dependent variable changes given a one-unit chane in the corresponding variable.  These parameters are known as the model _coefficients_. By fitting a linear model onto our training data, we obtain coefficient estimates that we use in the aforementioned linear model. In order to get our line, we must estimate the regression coefficients.
 
 ### Estimating the Regression Coefficients
 
 The parameters are estimated using the same least squares approach that
-we used for simple linear regression; i.e. choose β0, β1,...,βp to minimize the sum of squared residuals (RSS):
+we used for simple linear regression; i.e. choose B0, B1,...,Bp to minimize the sum of squared residuals (RSS):
 
 $$ RSS = \sum_{i=1}^n (y_i - \beta_0 - \beta_1x_i)^2 $$ 
 
-The values βˆ0, βˆ1,..., βˆp that minimize the above RSS equation are the multiple least squares regression coefficient estimates. These are obtained via linear algebra operations.
+The values Bˆ0, Bˆ1,..., Bˆp that minimize the above RSS equation are the multiple least squares regression coefficient estimates. These are obtained via linear algebra operations.
 
 Unlike the simple linear regression
 estimates given in (3.4), the multiple regression coefficient estimates have
@@ -70,18 +70,18 @@ Below we'll discuss them piecewise.
 ### 1. Is at least one of the predictors X1, X2,...,Xp useful in predicting
 the response?
 
-Recall, for the simple regression case, we could test whether X1 was associated with Y via a simple t-test with the null hypothesis dictating that β1 = 0. This won't work for multiple regression, because we're dealing with multiple predictors.
+Recall, for the simple regression case, we could test whether X1 was associated with Y via a simple t-test with the null hypothesis dictating that B1 = 0. This won't work for multiple regression, because we're dealing with multiple predictors.
 
-In the multiple regression case, say with p predictors, we need to test whether all of the regression coefficients are zero, (i.e. whether β1 = β2 = ··· = βp = 0).
+In the multiple regression case, say with p predictors, we need to test whether all of the regression coefficients are zero, (i.e. whether B1 = B2 = ··· = Bp = 0).
 
 We'll use a hpyothesis test to achieve this.
 
 $$ H_0: \beta_1 = \beta_2 = ... \beta_p = 0 $$
 $$ H_1: \exists  \beta_j \neq 0 $$
 
-H0 : β1 = β2 = ··· = βp = 0
+H0 : B1 = B2 = ··· = Bp = 0
 versus the alternative
-Ha : at least one βj is non-zero.
+Ha : at least one Bj is non-zero.
 This hypothesis test is performed by computing the F-statistic:
 
 
@@ -95,7 +95,7 @@ If our F-test reveals that at least one of the predictors is related to the resp
 There are numerous methods to achieve this. If we have a small number of features, we can investigate the p-values one-by-one. However, this is not feasible for large datasets with high-dimensionality. 
 The task of determining which predictors are associated with the response is referred to as variable selection, and our discussion will be limited to only a few classical approaches to vairable selection.
 
-One method of variable selection is to try each model corresponding to all the combination of coefficients that we have. When selecting a model this way, multiple assessment criteria exist, such as _Mallow’s Cp, Akaike information criterion (AIC), Bayesian informationcriterion (BIC)_, and _adjusted R-squared_.
+One method of variable selection is to try each model corresponding to all the combination of coefficients that we have. When selecting a model this way, multiple assessment criteria exist, such as _Mallows Cp, Akaike information criterion (AIC), Bayesian informationcriterion (BIC)_, and _adjusted R-squared_.
 
 Determining all possible model forms is not trivial. There are a total of $2^p$ models that contain subsets of p variables; this grows exponentially and quickly makes the task of trying out every possible subset of the predictors infeasible. Therefore, unless p is very
 small, we cannot consider all $2^p$ models, and instead we'll utilize three automated approaches to choose a smaller set of models. 
@@ -168,7 +168,8 @@ This section will apply all we learned in the above methodology section to our t
 To begin, let's view some of our data. We'll begin by viewing a scatterplot for each variable.
 
 ```{r}
-adv <- read.csv("./data/Advertising.csv")
+
+adv <- read.csv("/Users/jared/Desktop/stat159/stat_159/stat159-fall2016-hw03/data/Advertising.csv")
 #source("code/scripts/regression-script.R")
 library(xtable)
 lm.fit <- lm(Sales ~ TV + Radio + Newspaper, data=adv)
@@ -183,7 +184,7 @@ $$ sales = \beta_0 + \beta_1 * TV + \beta_2 * Radio + \beta_3 * Newspaper + erro
 
 How correlated are our features?
 
-```{r}
+```{r output xtable, results="asis", message=F, warning=F, echo=F}
 library(xtable)
 cor_table <- xtable(cor(adv))
 print(cor_table, type="latex")
@@ -191,7 +192,7 @@ print(cor_table, type="latex")
 
 What happens if we fit individual regression models (one for each independent variable)?
 
-```{r message=F, warning=F, echo=F}
+```{r new output xtable, results="asis", message=F, warning=F, echo=F}
 tv_reg_table <- xtable(lm(Sales~TV, data = adv),
                               caption = "Sales on TV")
 print(tv_reg_table, type="latex")
@@ -214,7 +215,7 @@ Unfortunately, using multiple linear models makes it difficult to estimate respo
 
 For this reason, we will use a multiple linear regression model:
 
-```{r , message=F, warning=F, echo=F}
+```{r another output xtable, results="asis", message=F, warning=F, echo=F}
 multiple_reg_table <- xtable(lm(Sales ~., data = adv),
                           caption = "Multiple Linear Regression for Advertising data set")
 print(multiple_reg_table, type="latex")
@@ -232,7 +233,7 @@ lmsum <- summary(lm.fit)
 
 
 # lm() and summary() objects
-reg <- lm(Sales~., data = advertising)
+reg <- lm(Sales~., data = adv)
 regsum <- summary(reg)
 
 
