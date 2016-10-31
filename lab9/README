@@ -1,16 +1,17 @@
-# Lab 9 Repository
+#Lab 9 Repository
 
-This is an implementatino of chapter 3 in Introduction to Elements of Statistical Learning. It contains a simple linear regression model on a credit data set. Information regarding the credit data and the book is available on
+This is an implementatino of chapter 3 in Introduction to Elements of Statistical Learning (Jame et. all). It contains a simple linear regression model on a credit data set. Information regarding the credit data and the book is available on
 
 
-## Authors
+##Author
 
 * **Jared Wilber** - *
-## License
+
+##License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments
+##Acknowledgments
 
-* Stat 159
+* Stat 159 course at UC Berkeley 
 * Our wonderful GSI
